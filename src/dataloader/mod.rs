@@ -294,6 +294,7 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
         I: IntoIterator<Item = K>,
         T: Loader<K>,
     {
+        #[derive(Debug)]
         enum Action {
             ImmediateLoad,
             StartFetch,
