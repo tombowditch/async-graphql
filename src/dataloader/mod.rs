@@ -311,31 +311,45 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 .or_insert_with(|| Box::new(Requests::<K, T>::new(&self.cache_factory)))
                 .downcast_mut::<Requests<K, T>>()
                 .unwrap();
+            println!("aaa");
             let prev_count = typed_requests.keys.len();
+            println!("bbb");
             let mut keys_set = HashSet::new();
+            println!("ccc");
             let mut use_cache_values = HashMap::new();
+            println!("ddd");
 
             if typed_requests.disable_cache || self.disable_cache.load(Ordering::SeqCst) {
+                println!("eee");
                 keys_set = keys.into_iter().collect();
             } else {
+                println!("fff");
                 for key in keys {
+                    println!("ggg");
                     if let Some(value) = typed_requests.cache_storage.get(&key) {
+                        println!("hhh");
                         // Already in cache
                         use_cache_values.insert(key.clone(), value.clone());
                     } else {
+                        println!("iii");
                         keys_set.insert(key);
                     }
                 }
             }
-
+            println!("jjj");
             if !use_cache_values.is_empty() && keys_set.is_empty() {
+                println!("kk");
                 return Ok(use_cache_values);
             } else if use_cache_values.is_empty() && keys_set.is_empty() {
+                println!("ll");
                 return Ok(Default::default());
             }
+            println!("mm");
 
             typed_requests.keys.extend(keys_set.clone());
+            println!("nn");
             let (tx, rx) = oneshot::channel();
+            println!("pp");
             typed_requests.pending.push((
                 keys_set,
                 ResSender {
@@ -343,10 +357,13 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                     tx,
                 },
             ));
+            println!("qqq");
 
             if typed_requests.keys.len() >= self.max_batch_size {
+                println!("rr");
                 (Action::ImmediateLoad, rx)
             } else {
+                println!("ss");
                 (
                     if !typed_requests.keys.is_empty() && prev_count == 0 {
                         Action::StartFetch
@@ -357,6 +374,8 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 )
             }
         };
+        println!("tt");
+        println!("{:?}", action);
 
         match action {
             Action::ImmediateLoad => self.immediate_load::<K>().await,
