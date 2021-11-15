@@ -387,6 +387,8 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
             Action::Delay => {}
         }
 
+        println!("uu");
+
         rx.await.unwrap()
     }
 
