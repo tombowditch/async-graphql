@@ -303,7 +303,9 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
         let tid = TypeId::of::<K>();
 
         let (action, rx) = {
+            println!("trying to lock requests");
             let mut requests = self.requests.lock().unwrap();
+            println!("locked requests");
             let typed_requests = requests
                 .entry(tid)
                 .or_insert_with(|| Box::new(Requests::<K, T>::new(&self.cache_factory)))
