@@ -293,6 +293,7 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
         I: IntoIterator<Item = K>,
         T: Loader<K>,
     {
+        #[derive(Debug)]
         enum Action {
             ImmediateLoad,
             StartFetch,
@@ -358,6 +359,8 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 )
             }
         };
+
+        println!("action: {:?}", action);
 
         match action {
             Action::ImmediateLoad => self.immediate_load::<K>().await,
