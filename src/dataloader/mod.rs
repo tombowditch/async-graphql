@@ -349,7 +349,7 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 (Action::ImmediateLoad, rx)
             } else {
                 (
-                    if !typed_requests.keys.is_empty() && prev_count == 0 {
+                    if !typed_requests.keys.is_empty() && prev_count != 0 {
                         Action::StartFetch
                     } else {
                         Action::Delay
