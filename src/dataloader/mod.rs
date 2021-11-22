@@ -341,6 +341,11 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 },
             ));
 
+            println!("{:?}", typed_requests.keys);
+            println!("{:?}", typed_requests.keys.len());
+            println!("{:?}", self.max_batch_size.clone());
+            println!("{:?}", prev_count);
+
             if typed_requests.keys.len() >= self.max_batch_size {
                 (Action::ImmediateLoad, rx)
             } else {
