@@ -342,7 +342,7 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 },
             ));
 
-            println!("typed requests len: {:?}", typed_requests.keys.len());
+            println!("typed requests keys len: {:?}", typed_requests.keys.len());
             println!("max batch size: {:?}", self.max_batch_size.clone());
             println!("previous count: {:?}", prev_count);
 
@@ -350,7 +350,7 @@ impl<T, C: CacheFactory> DataLoader<T, C> {
                 (Action::ImmediateLoad, rx)
             } else {
                 (
-                    if !typed_requests.keys.is_empty() && prev_count != 0 {
+                    if !typed_requests.keys.is_empty() && prev_count > 0 {
                         Action::StartFetch
                     } else {
                         Action::Delay
